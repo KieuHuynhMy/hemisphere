@@ -1,25 +1,61 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import HemisphereDisplay from "./HemisphereDisplay";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+export default class App extends Component {
+  // constructor(props) {
+  //   super(props);
+  //   this.state = {
+  //     latitude: null,
+  //     errorMessage: "",
+  //   };
+  //   window.navigator.geolocation.getCurrentPosition(
+  //     (position) => {
+  //       this.setState({ latitude: position.coords.latitude });
+  //     },
+  //     (error) => this.setState({ errorMessage: error.message })
+  //   );
+  // }
+
+  // Viet State kieu nay cho gon
+  state = {
+    latitude: null,
+    errorMessage: "",
+  };
+
+  componentDidMount() {
+    window.navigator.geolocation.getCurrentPosition(
+      (position) => {
+        this.setState({ latitude: position.coords.latitude });
+      },
+      (error) => this.setState({ errorMessage: error.message })
+    );
+  }
+
+  render() {
+    const { latitude, errorMessage } = this.state;
+
+    // if (this.state.errorMessage && !this.state.latitude) {
+    //   return <div>{this.state.errorMessage}</div>;
+    // }
+    // if (!this.state.errorMessage && this.state.latitude) {
+    //   return <HemisphereDisplay latitude={this.state.latitude} />;
+    // } else {
+    //   return <div>Loading...</div>;
+    // }
+
+    if (latitude > 1 && !errorMessage) {
+      return <HemisphereDisplay latitute={latitude} />;
+    } else if (latitude < 1 && !errorMessage) {
+      return <HemisphereDisplay latitute={latitude} />;
+    } else {
+      return <div>Loading... {errorMessage}</div>;
+    }
+
+    // return (
+    //   <div>
+    //     {latitude}
+    //     {this.state.errorMessage}
+    //   </div>
+    // );
+  }
 }
-
-export default App;
